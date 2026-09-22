@@ -1,4 +1,6 @@
 name = 'Nightnote'
 description = 'A quiet Hugo theme for an Obsidian-first personal site.'
+homepage = 'https://github.com/seeyou2n1ght/hugo-theme-nightbook'
 license = 'MIT'
+licenselink = 'https://github.com/seeyou2n1ght/hugo-theme-nightbook/blob/main/LICENSE'
 min_version = '0.166.0'

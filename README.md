@@ -1,31 +1,22 @@
 # Nightnote
 
-Nightnote 是一个面向个人静态博客的 Hugo 主题。视觉方向是简洁的编辑式排版与技术笔记；界面目前仅提供中文，文章内容和专题名称保持作者原文。主题负责展示与发现内容，Obsidian 笔记的选择、校验和转换由站点自己的发布流程负责。
+Nightnote 是面向 Obsidian 笔记的 Hugo 个人博客主题，采用简洁的编辑式排版。界面目前为中文，支持文章、项目、专题、标签云、合集、时间线、搜索、随机阅读与明暗外观。主题只负责呈现；公开内容的选择、双链与附件转换应由站点的发布流程完成。
 
-> 当前是主题源码，尚未发布到 GitHub。仓库名建议为 `hugo-theme-nightnote`；Hugo 安装目录为 `themes/nightnote/`。
+本仓库名为 [`hugo-theme-nightbook`](https://github.com/seeyou2n1ght/hugo-theme-nightbook)，主题展示名和 Hugo 安装目录仍为 **Nightnote / `nightnote`**。已使用 Hugo v0.166.0 验证，最低版本为 v0.166.0。
 
-## 功能与边界
+## 安装与使用
 
-- 首页、探索页（专题、标签云、合集、时间线、随机阅读）、项目列表、文章与项目详情、About、搜索、RSS、404。
-- 浅色、深色和跟随系统外观；窄屏布局、文章目录、代码复制、图片放大、阅读进度。
-- Hugo 原生 Obsidian callout（包括自定义标题和 `+`/`-` 折叠）、Mermaid、KaTeX、Page Bundle 图片与封面。
-- 页面、搜索和 RSS 只展示 `publishStatus: published` 且 `private: false` 的内容；主题还会拒绝渲染不符合该条件的普通页面。**发布前仍须由站点流程筛选附件和其他文件**，不能仅依赖主题模板作为隐私边界。
-
-Mermaid 和 KaTeX 在用到时从公共 CDN 加载；默认 Open Graph 配图为 SVG，部分分享平台可能无法预览。随机阅读和搜索需要浏览器 JavaScript 与站点根目录的 `search.json`。
-
-## 安装与配置
-
-已在 Hugo **v0.166.0** 验证；主题声明的最低版本为 v0.166.0。将本仓库放到站点的 `themes/nightnote/`，例如：
+在 Hugo 站点根目录安装主题：
 
 ```sh
-git clone <仓库地址> themes/nightnote
+git clone https://github.com/seeyou2n1ght/hugo-theme-nightbook.git themes/nightnote
 ```
 
-在站点的 `hugo.yaml` 中至少配置以下内容。`theme: nightnote` 必须与安装目录同名；搜索输出及 taxonomy 路径是当前模板的约定。
+`hugo.yaml` 至少需要以下配置。搜索与随机阅读依赖 `search.json`；数学公式使用下方的 Goldmark passthrough 配置。
 
 ```yaml
 baseURL: https://blog.example.com/
-title: 你的站点名称
+title: 我的博客
 defaultContentLanguage: zh
 languages:
   zh:
@@ -62,50 +53,35 @@ markup:
         delimiters:
           block: [['$$', '$$']]
           inline: [['$', '$']]
-params:
-  intro: 一句话介绍
-  focus: 关注的方向
-  github: https://github.com/your-name
-  email: you@example.com
 ```
 
-`params.github` 和 `params.email` 可省略；配置后会显示于站点页脚及首页。站点需要提供 `content/about.md`、`content/posts/`、`content/projects/`，以及探索页对应的 `content/explore/_index.md`。导航和首页链接使用这些固定路径。
+站点内容放在 `content/posts/`、`content/projects/`，并提供 `content/about.md` 和 `content/explore/_index.md`。可选的 `params.intro`、`params.focus`、`params.github`、`params.email` 分别用于首页简介、关注方向和联系链接。配置完成后，在站点根目录运行 `hugo server` 预览，运行 `hugo` 构建静态文件。
 
-## 内容约定
+## 元数据约束
 
-文章放在 `posts`，项目放在 `projects`；建议使用 Page Bundle，将 `index.md`、封面和正文图片放在同一目录。示例 front matter：
+下面是文章示例；项目放在 `projects` 并将 `noteType` 设为 `project`。图片建议与 `index.md` 放在同一个 Page Bundle 中。
 
 ```yaml
 ---
 title: 示例文章
+noteId: c6f18e3e-a9a0-45a3-a1f9-5eed03f8e1c9
 slug: example-post
-published: 2026-09-22
-description: 用于列表、搜索和分享的简短摘要。
+noteType: note
 private: false
 publishStatus: published
+published: 2026-09-22
+description: 一句话摘要
 category: Writing
 tags: [Hugo, Obsidian]
-collection: 博客建设
-cover: cover.png
+collection: 博客建设 # 可选
+cover: cover.png # 可选
 ---
 ```
 
-`category` 是单个专题，`tags` 是标签数组，`collection` 是可选合集。专题可同时包含文章与项目，仅关联项目的专题也会进入探索页和搜索索引。项目可另设 `featured: true`（首页精选）及 `links`（名称到 URL 的映射）；文章可通过 `project` 保存对应公开项目的站内 URL，用于项目页的相关文章。`slug` 应保持稳定。主题从 `published` 读取发布日期；如果站点未采用上方的 `frontmatter.date` 映射，日期和排序可能不符合预期。
+主题仅展示 `private: false` 且 `publishStatus: published` 的普通页面，并从 `published` 读取日期。`category` 是单个专题，可同时关联文章与项目；`tags` 是数组，`collection` 是可选合集。项目还可使用 `featured: true` 和 `links`；文章可用 `project` 保存关联项目的站内 URL。`noteId` 用于 Obsidian 发布流程识别笔记更新，主题本身不使用它。
 
-主题**不负责**生成 `noteId`、验证元数据、解析 `[[双链]]` 或 `![[嵌入]]`、选择公开附件，也不直接读取整个 Obsidian 仓库。本项目的发布流程与元数据契约位于站点仓库的 `docs/PUBLISHING_WORKFLOW.md`，独立主题仓库不包含该文件；请在自己的站点建立对应流程。
-
-## 本地验证
-
-在本项目的示例站点根目录运行（需 Python 3 和 PyYAML）：
-
-```sh
-python scripts/prepare.py
-hugo server --contentDir .build/content
-python -m unittest discover -s tests -v
-```
-
-独立安装主题后，在你的**站点根目录**运行 `hugo server` 或 `hugo`；`scripts/prepare.py`、示例内容和部署配置并不包含在主题仓库中。正式发布前替换示例域名及联系信息，核查生成目录中没有私密笔记或附件。
+**主题不是发布闸门。** 发布前须在站点侧校验元数据、筛选公开笔记与附件，并处理 Obsidian 双链；不要直接把完整笔记仓库交给 Hugo。Mermaid 和 KaTeX 按需从公共 CDN 加载，默认 Open Graph 配图为 SVG。
 
 ## 许可证
 
-主题源码采用 [MIT License](LICENSE)，允许使用、修改和分发；再分发时保留版权及许可声明。示例站点的笔记和图片不属于本主题仓库。
+主题源码采用 [MIT License](LICENSE)。示例站点的笔记和图片不包含在本仓库中。
