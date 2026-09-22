@@ -1,0 +1,1 @@
+<div class="code-wrap"><button type="button" class="copy-code">复制</button>{{ with .Attributes.filename }}<span class="code-filename">{{ . }}</span>{{ end }}<pre><code class="language-{{ .Type }}">{{ if transform.CanHighlight .Type }}{{ (transform.HighlightCodeBlock .).Inner }}{{ else }}{{ .Inner }}{{ end }}</code></pre></div>

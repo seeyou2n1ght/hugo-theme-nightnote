@@ -1,0 +1,1 @@
+{{ define "main" }}<div class="shell page narrow"><h1>{{ if eq .Data.Plural "category" }}专题{{ else if eq .Data.Plural "tags" }}标签{{ else }}合集{{ end }}</h1><ul class="topic-list">{{ range partial "post-terms.html" (dict "page" . "taxonomy" .Data.Plural) }}<li><a href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a><span>{{ .Count }}</span></li>{{ end }}</ul></div>{{ end }}

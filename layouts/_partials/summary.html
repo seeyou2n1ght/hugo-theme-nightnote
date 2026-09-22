@@ -1,0 +1,1 @@
+{{- with .Params.description -}}{{ . }}{{- else -}}{{ .Summary | plainify | truncate 140 }}{{- end -}}

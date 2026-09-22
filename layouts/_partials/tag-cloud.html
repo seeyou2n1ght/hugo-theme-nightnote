@@ -1,0 +1,9 @@
+{{- $terms := first (.limit | default 1000) .terms -}}
+{{- $max := 1 -}}
+{{- range $terms -}}{{- if gt .Count $max -}}{{- $max = .Count -}}{{- end -}}{{- end -}}
+<div class="tag-cloud tag-cloud--visual">
+  {{- range $terms -}}
+    {{- $size := add 0.88 (mul 0.36 (div (float .Count) (float $max))) -}}
+    <a href="{{ .Page.RelPermalink }}" style="font-size:{{ printf "%.2f" $size }}rem" title="{{ .Page.Title }}：{{ .Count }} 篇文章" aria-label="{{ .Page.Title }}，{{ .Count }} 篇文章">{{ .Page.Title }}</a>
+  {{- end -}}
+</div>

@@ -1,0 +1,17 @@
+{{- if eq .Type "alert" -}}
+  {{- $titles := dict "note" "笔记" "info" "信息" "tip" "提示" "warning" "注意" "quote" "引用" "important" "重要" "caution" "警告" -}}
+  {{- $title := .AlertTitle | default (index $titles .AlertType | default .AlertType) -}}
+  {{- if .AlertSign -}}
+    <details class="callout callout-{{ .AlertType }}"{{ if eq .AlertSign "+" }} open{{ end }}>
+      <summary>{{ $title }}</summary>
+      <div class="callout-content">{{ .Text }}</div>
+    </details>
+  {{- else -}}
+    <div class="callout callout-{{ .AlertType }}">
+      <p class="callout-title">{{ $title }}</p>
+      <div class="callout-content">{{ .Text }}</div>
+    </div>
+  {{- end -}}
+{{- else -}}
+  <blockquote>{{ .Text }}</blockquote>
+{{- end -}}

@@ -1,0 +1,6 @@
+{{ define "main" }}
+{{ $public := partial "public-pages.html" . }}{{ $posts := where $public "Section" "posts" }}{{ $projects := where $public "Section" "projects" }}
+<div class="shell"><section class="intro"><h1>{{ site.Title }}</h1><p>{{ site.Params.intro }}</p><p class="muted">{{ site.Params.focus }}</p><div class="intro-links">{{ with site.Params.email }}<a href="mailto:{{ . }}">邮箱</a>{{ end }}{{ with site.Params.github }}<a href="{{ . }}">GitHub</a>{{ end }}<a href="{{ "index.xml" | relURL }}">RSS</a><a href="{{ "about/" | relURL }}">关于我 →</a></div></section>
+<section class="home-explore"><h2>探索</h2><div class="two-columns"><div><h3>热门标签</h3>{{ partial "tag-cloud.html" (dict "terms" (partial "post-terms.html" (dict "page" . "taxonomy" "tags")) "limit" 20) }}<a class="more" href="{{ "explore/" | relURL }}">查看全部 →</a></div><div><h3>最近文章</h3><ul class="article-list">{{ range first 5 ($posts.ByDate.Reverse) }}{{ partial "article-row.html" . }}{{ end }}</ul><a class="more" href="{{ "explore/" | relURL }}#timeline">查看全部文章 →</a></div></div></section>
+<section><div class="section-heading"><h2>精选项目</h2><a href="{{ "projects/" | relURL }}">查看全部 →</a></div><div class="project-grid">{{ range first 3 ((where $projects "Params.featured" true).ByDate.Reverse) }}{{ partial "project-card.html" . }}{{ end }}</div></section></div>
+{{ end }}

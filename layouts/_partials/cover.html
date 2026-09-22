@@ -1,0 +1,4 @@
+{{- $cover := .Params.cover -}}
+{{- with $cover -}}
+  {{- with $.Resources.GetMatch . -}}<img src="{{ .RelPermalink }}" alt="" loading="lazy">{{- end -}}
+{{- end -}}

@@ -1,0 +1,2 @@
+{{- $pages := where site.RegularPages "Params.publishstatus" "published" -}}
+{{- return (where $pages "Params.private" false) -}}

@@ -1,0 +1,14 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if not .IsHome }}{{ if eq .Kind "taxonomy" }}{{ if eq .Data.Plural "category" }}专题{{ else if eq .Data.Plural "tags" }}标签{{ else }}合集{{ end }}{{ else }}{{ .Title }}{{ end }} · {{ end }}{{ site.Title }}</title>
+<meta name="description" content="{{ partial "summary.html" . }}">
+<link rel="canonical" href="{{ .Permalink }}">
+<meta property="og:title" content="{{ .Title }}">
+<meta property="og:description" content="{{ partial "summary.html" . }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+{{ $og := partial "og-image.html" . }}{{ with .Params.cover }}{{ with $.Resources.GetMatch . }}{{ $og = .Permalink }}{{ end }}{{ end }}<meta property="og:image" content="{{ $og }}">
+{{ with site.Home.OutputFormats.Get "RSS" }}<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}">{{ end }}
+{{ with resources.Get "css/site.css" }}<link rel="stylesheet" href="{{ .RelPermalink }}">{{ end }}
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('nightnote-theme')||'system'}catch(e){}</script>
+{{ with resources.Get "js/site.js" }}<script defer src="{{ .RelPermalink }}"></script>{{ end }}

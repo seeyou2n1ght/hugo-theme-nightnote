@@ -1,0 +1,3 @@
+name = 'Nightnote'
+description = 'A quiet Hugo theme for an Obsidian-first personal site.'
+min_version = '0.166.0'

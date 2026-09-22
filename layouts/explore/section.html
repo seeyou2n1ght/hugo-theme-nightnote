@@ -1,0 +1,15 @@
+{{ define "main" }}
+{{ $public := partial "public-pages.html" . }}{{ $posts := (where $public "Section" "posts").ByDate.Reverse }}
+<div class="shell page explore-page">
+  <header class="explore-intro"><h1>探索</h1><p class="lead">从专题、标签和合集出发，或沿着时间线阅读。</p></header>
+  <div class="discovery-grid">
+    <section><h2>专题</h2><div class="topic-grid">{{ range partial "post-terms.html" (dict "page" . "taxonomy" "category") }}<a href="{{ .Page.RelPermalink }}">{{ .Page.Title }} <small>{{ .Count }}</small></a>{{ end }}</div></section>
+    <section><h2>标签</h2>{{ partial "tag-cloud.html" (dict "terms" (partial "post-terms.html" (dict "page" . "taxonomy" "tags"))) }}</section>
+  </div>
+  <section class="collections-section"><h2>合集</h2><div class="collection-grid">{{ range partial "post-terms.html" (dict "page" . "taxonomy" "collection") }}<a href="{{ .Page.RelPermalink }}"><span>{{ .Page.Title }}</span><small>{{ .Count }} 篇文章 ↗</small></a>{{ else }}<p class="muted">暂无合集</p>{{ end }}</div></section>
+  <div class="explore-lower">
+    <section id="timeline"><h2>时间线</h2>{{ $year := "" }}{{ range $posts }}{{ $next := .Date.Format "2006" }}{{ if ne $next $year }}{{ $year = $next }}<h3 class="year">{{ $year }}</h3>{{ end }}<div class="timeline-row"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "01.02" }}</time><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>{{ end }}</section>
+    <aside class="random"><h2>随机阅读</h2><p>从公开文章中随便读一篇。</p><button type="button" data-random-article>随机打开一篇 →</button></aside>
+  </div>
+</div>
+{{ end }}
