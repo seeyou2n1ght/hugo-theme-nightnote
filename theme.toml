@@ -1,3 +1,4 @@
 name = 'Nightnote'
 description = 'A quiet Hugo theme for an Obsidian-first personal site.'
+license = 'MIT'
 min_version = '0.166.0'

@@ -1,10 +1,12 @@
-{{- $posts := where (partial "public-pages.html" .page) "Section" "posts" -}}
+{{- $public := partial "public-pages.html" .page -}}
+{{- $pages := where $public "Section" "posts" -}}
+{{- if eq .taxonomy "category" -}}{{- $pages = where $public "Section" "in" (slice "posts" "projects") -}}{{- end -}}
 {{- $terms := slice -}}
 {{- range index site.Taxonomies .taxonomy -}}
   {{- $count := 0 -}}
-  {{- range .Pages -}}{{- if in $posts . -}}{{- $count = add $count 1 -}}{{- end -}}{{- end -}}
+  {{- range .Pages -}}{{- if in $pages . -}}{{- $count = add $count 1 -}}{{- end -}}{{- end -}}
   {{- if $count -}}
-    {{- $key := printf "%0*d-%s" (len (string (len $posts))) (sub (len $posts) $count) (lower .Page.Title) -}}
+    {{- $key := printf "%0*d-%s" (len (string (len $pages))) (sub (len $pages) $count) (lower .Page.Title) -}}
     {{- $terms = $terms | append (dict "Page" .Page "Count" $count "SortKey" $key) -}}
   {{- end -}}
 {{- end -}}

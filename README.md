@@ -2,7 +2,7 @@
 
 Nightnote 是一个面向个人静态博客的 Hugo 主题。视觉方向是简洁的编辑式排版与技术笔记；界面目前仅提供中文，文章内容和专题名称保持作者原文。主题负责展示与发现内容，Obsidian 笔记的选择、校验和转换由站点自己的发布流程负责。
 
-> 当前是主题源码，尚未发布到 GitHub，也尚未确定开源许可证。仓库名建议为 `hugo-theme-nightnote`；Hugo 安装目录为 `themes/nightnote/`。
+> 当前是主题源码，尚未发布到 GitHub。仓库名建议为 `hugo-theme-nightnote`；Hugo 安装目录为 `themes/nightnote/`。
 
 ## 功能与边界
 
@@ -90,7 +90,7 @@ cover: cover.png
 ---
 ```
 
-`category` 是单个专题，`tags` 是标签数组，`collection` 是可选合集。项目可另设 `featured: true`（首页精选）及 `links`（名称到 URL 的映射）；文章可通过 `project` 保存对应公开项目的站内 URL，用于项目页的相关文章。`slug` 应保持稳定。主题从 `published` 读取发布日期；如果站点未采用上方的 `frontmatter.date` 映射，日期和排序可能不符合预期。
+`category` 是单个专题，`tags` 是标签数组，`collection` 是可选合集。专题可同时包含文章与项目，仅关联项目的专题也会进入探索页和搜索索引。项目可另设 `featured: true`（首页精选）及 `links`（名称到 URL 的映射）；文章可通过 `project` 保存对应公开项目的站内 URL，用于项目页的相关文章。`slug` 应保持稳定。主题从 `published` 读取发布日期；如果站点未采用上方的 `frontmatter.date` 映射，日期和排序可能不符合预期。
 
 主题**不负责**生成 `noteId`、验证元数据、解析 `[[双链]]` 或 `![[嵌入]]`、选择公开附件，也不直接读取整个 Obsidian 仓库。本项目的发布流程与元数据契约位于站点仓库的 `docs/PUBLISHING_WORKFLOW.md`，独立主题仓库不包含该文件；请在自己的站点建立对应流程。
 
@@ -105,3 +105,7 @@ python -m unittest discover -s tests -v
 ```
 
 独立安装主题后，在你的**站点根目录**运行 `hugo server` 或 `hugo`；`scripts/prepare.py`、示例内容和部署配置并不包含在主题仓库中。正式发布前替换示例域名及联系信息，核查生成目录中没有私密笔记或附件。
+
+## 许可证
+
+主题源码采用 [MIT License](LICENSE)，允许使用、修改和分发；再分发时保留版权及许可声明。示例站点的笔记和图片不属于本主题仓库。
