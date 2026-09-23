@@ -78,6 +78,12 @@ markup:
 
 站点内容放在 `content/posts/`、`content/projects/`，并提供 `content/about.md` 和 `content/explore/_index.md`。可选的 `params.intro`、`params.focus`、`params.github`、`params.email` 分别用于首页简介、关注方向和联系链接。配置完成后，在站点根目录运行 `hugo server` 预览，运行 `hugo` 构建静态文件。
 
+### 从示例站开始迁移
+
+将 `themes/nightnote/exampleSite/hugo.yaml` 复制到站点根目录，将 `themes/nightnote/exampleSite/content/` 复制为站点的 `content/`。示例已包含关于页、普通文章、带图片的文章、普通项目、带封面的项目，以及文章与项目列表和探索页；直接运行 `hugo server` 即可预览。
+
+先修改 `hugo.yaml` 中的 `baseURL`、站点标题、简介和联系信息，再用自己的 Markdown 替换 `content/about.md`、`content/posts/` 和 `content/projects/` 中的演示文字与图片。保留各目录的 `_index.md`；不需要的演示文章和项目应在正式构建前删除。若使用 Obsidian 发布流程，还须按下文的元数据契约为笔记设置自己的 `noteId` 和 `noteType`，并在发布前筛选公开内容及附件。
+
 ## 元数据约束
 
 下面是文章示例；项目放在 `projects` 并将 `noteType` 设为 `project`。图片建议与 `index.md` 放在同一个 Page Bundle 中。
