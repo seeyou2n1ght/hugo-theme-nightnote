@@ -1,0 +1,60 @@
+baseURL = 'https://example.org/'
+title = 'Nightnote'
+locale = 'zh-CN'
+hasCJKLanguage = true
+defaultContentLanguage = 'zh'
+theme = 'nightnote'
+enableRobotsTXT = true
+
+[languages.zh]
+  locale = 'zh-CN'
+
+[frontmatter]
+  date = ['published', 'date']
+
+[taxonomies]
+  category = 'category'
+  tag = 'tags'
+  collection = 'collection'
+
+[permalinks]
+  posts = '/posts/:slug/'
+  projects = '/projects/:slug/'
+
+[permalinks.taxonomy]
+  category = '/topics/'
+  collection = '/collections/'
+
+[permalinks.term]
+  category = '/topics/:slug/'
+  collection = '/collections/:slug/'
+
+[outputs]
+  home = ['HTML', 'RSS', 'Search']
+  section = ['HTML']
+  taxonomy = ['HTML']
+  term = ['HTML']
+
+[outputFormats.Search]
+  mediaType = 'application/json'
+  baseName = 'search'
+  isPlainText = true
+  notAlternative = true
+
+[markup.highlight]
+  noClasses = true
+
+[markup.goldmark.parser.attribute]
+  block = true
+  title = true
+
+[markup.goldmark.extensions.passthrough]
+  enable = true
+
+[markup.goldmark.extensions.passthrough.delimiters]
+  block = [['$$', '$$']]
+  inline = [['$', '$']]
+
+[params]
+  intro = '做些东西，解决重复的问题，也把学到的东西写下来。'
+  focus = '关注效率、知识组织与可靠的软件。'

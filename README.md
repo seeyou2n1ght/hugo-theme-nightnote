@@ -40,57 +40,62 @@ Nightnote 是面向 Obsidian 笔记的 Hugo 个人博客主题，采用简洁的
 git clone https://github.com/seeyou2n1ght/hugo-theme-nightnote.git themes/nightnote
 ```
 
-当前主题要求每个普通内容页都设置 `private: false` 和 `publishStatus: published`；缺少这两个字段的普通 Hugo 文章会使构建失败。主题不是发布闸门，仍须在站点侧筛选内容和附件。`hugo.yaml` 至少需要以下配置。搜索与随机阅读依赖 `search.json`；数学公式使用下方的 Goldmark passthrough 配置。
+当前主题要求每个普通内容页都设置 `private: false` 和 `publishStatus: published`；缺少这两个字段的普通 Hugo 文章会使构建失败。主题不是发布闸门，仍须在站点侧筛选内容和附件。`hugo.toml` 至少需要以下配置。搜索与随机阅读依赖 `search.json`；数学公式使用下方的 Goldmark passthrough 配置。
 
-```yaml
-baseURL: https://blog.example.com/
-title: Nightnote
-defaultContentLanguage: zh
-hasCJKLanguage: true
-languages:
-  zh:
-    locale: zh-CN
-theme: nightnote
-frontmatter:
-  date: [published, date]
-taxonomies:
-  category: category
-  tag: tags
-  collection: collection
-permalinks:
-  posts: /posts/:slug/
-  projects: /projects/:slug/
-  taxonomy:
-    category: /topics/
-    collection: /collections/
-  term:
-    category: /topics/:slug/
-    collection: /collections/:slug/
-outputs:
-  home: [HTML, RSS, Search]
-outputFormats:
-  Search:
-    mediaType: application/json
-    baseName: search
-    isPlainText: true
-    notAlternative: true
-markup:
-  goldmark:
-    extensions:
-      passthrough:
-        enable: true
-        delimiters:
-          block: [['$$', '$$']]
-          inline: [['$', '$']]
+```toml
+baseURL = 'https://blog.example.com/'
+title = 'Nightnote'
+defaultContentLanguage = 'zh'
+hasCJKLanguage = true
+theme = 'nightnote'
+
+[languages.zh]
+  locale = 'zh-CN'
+
+[frontmatter]
+  date = ['published', 'date']
+
+[taxonomies]
+  category = 'category'
+  tag = 'tags'
+  collection = 'collection'
+
+[permalinks]
+  posts = '/posts/:slug/'
+  projects = '/projects/:slug/'
+
+[permalinks.taxonomy]
+  category = '/topics/'
+  collection = '/collections/'
+
+[permalinks.term]
+  category = '/topics/:slug/'
+  collection = '/collections/:slug/'
+
+[outputs]
+  home = ['HTML', 'RSS', 'Search']
+
+[outputFormats.Search]
+  mediaType = 'application/json'
+  baseName = 'search'
+  isPlainText = true
+  notAlternative = true
+
+[markup.goldmark.extensions.passthrough]
+  enable = true
+
+[markup.goldmark.extensions.passthrough.delimiters]
+  block = [['$$', '$$']]
+  inline = [['$', '$']]
 ```
 
 站点内容放在 `content/posts/`、`content/projects/`，并提供 `content/about.md` 和 `content/explore/_index.md`。可选的 `params.intro`、`params.focus`、`params.github`、`params.email` 分别用于首页简介、关注方向和联系链接。配置完成后，在站点根目录运行 `hugo server` 预览，运行 `hugo` 构建静态文件。
 
 ### 从示例站开始迁移
 
-将 `themes/nightnote/exampleSite/hugo.yaml` 复制到站点根目录，将 `themes/nightnote/exampleSite/content/` 复制为站点的 `content/`。示例已包含关于页、普通文章、带图片的文章、普通项目、带封面的项目，以及文章与项目列表和探索页；直接运行 `hugo server` 即可预览。
+将 `themes/nightnote/exampleSite/hugo.toml` 复制到站点根目录，将 `themes/nightnote/exampleSite/content/` 复制为站点的 `content/`。示例已包含关于页、普通文章、带图片的文章、普通项目、带封面的项目，以及文章与项目列表和探索页；直接运行 `hugo server` 即可预览。
 
-先修改 `hugo.yaml` 中的 `baseURL`、站点标题、简介和联系信息，再用自己的 Markdown 替换 `content/about.md`、`content/posts/` 和 `content/projects/` 中的演示文字与图片。保留各目录的 `_index.md`；不需要的演示文章和项目应在正式构建前删除。若使用 Obsidian 发布流程，还须按下文的元数据契约为笔记设置自己的 `noteId` 和 `noteType`，并在发布前筛选公开内容及附件。
+先修改 `hugo.toml` 中的 `baseURL`、站点标题、简介和联系信息，再用自己的 Markdown 替换 `content/about.md`、`content/posts/` 和 `content/projects/` 中的演示文字与图片。保留各目录的 `_index.md`；不需要的演示文章和项目应在正式构建前删除。若使用 Obsidian 发布流程，还须按下文的元数据契约为笔记设置自己的 `noteId` 和 `noteType`，并在发布前筛选公开内容及附件。
 
 ## 元数据约束
 

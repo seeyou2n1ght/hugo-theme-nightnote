@@ -54,7 +54,7 @@ class ThemeTest(unittest.TestCase):
                 )
             output = temporary / "public"
             subprocess.run(
-                ["hugo", "--config", str(root / "exampleSite/hugo.yaml"),
+                ["hugo", "--config", str(root / "exampleSite/hugo.toml"),
                  "--themesDir", str(root.parent), "--theme", root.name,
                  "--contentDir", str(content), "--destination", str(output)],
                 cwd=root, check=True, capture_output=True,
