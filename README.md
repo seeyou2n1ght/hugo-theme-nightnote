@@ -6,7 +6,7 @@ Nightnote 是面向 Obsidian 笔记的 Hugo 个人博客主题，采用简洁的
 
 ## 视觉预览
 
-以下为此前本地测试站点的截图，展示主题在实际内容中的效果；仓库自带的 `exampleSite/` 使用独立演示内容。
+以下截图来自仓库自带的独立 `exampleSite/` 演示内容。
 
 ### 首页 · 浅色
 
@@ -32,11 +32,11 @@ Nightnote 是面向 Obsidian 笔记的 Hugo 个人博客主题，采用简洁的
 git clone https://github.com/seeyou2n1ght/hugo-theme-nightnote.git themes/nightnote
 ```
 
-`hugo.yaml` 至少需要以下配置。搜索与随机阅读依赖 `search.json`；数学公式使用下方的 Goldmark passthrough 配置。
+当前主题要求每个普通内容页都设置 `private: false` 和 `publishStatus: published`；缺少这两个字段的普通 Hugo 文章会使构建失败。主题不是发布闸门，仍须在站点侧筛选内容和附件。`hugo.yaml` 至少需要以下配置。搜索与随机阅读依赖 `search.json`；数学公式使用下方的 Goldmark passthrough 配置。
 
 ```yaml
 baseURL: https://blog.example.com/
-title: 我的博客
+title: Nightnote
 defaultContentLanguage: zh
 hasCJKLanguage: true
 languages:

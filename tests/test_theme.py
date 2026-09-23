@@ -21,6 +21,8 @@ class ThemeTest(unittest.TestCase):
             for page in ("index.html", "explore/index.html", "projects/index.html",
                          "about/index.html", "posts/welcome/index.html"):
                 html = (output / page).read_text(encoding="utf-8")
+                if page == "index.html":
+                    self.assertIn("<title>Nightnote</title>", html)
                 self.assertIn('/preview/search.json', html)
                 assets = re.findall(r'/preview/(?:css|js)/site\.min\.[a-f0-9]+\.(?:css|js)', html)
                 self.assertEqual(len(assets), 2)
