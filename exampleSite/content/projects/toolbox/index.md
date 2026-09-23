@@ -1,9 +1,7 @@
 ---
 title: Toolbox
 slug: toolbox
-private: false
-publishStatus: published
-published: 2026-09-08
+date: 2026-09-08
 category: 软件实践
 tags: [Automation]
 featured: true

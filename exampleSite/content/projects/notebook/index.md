@@ -1,9 +1,7 @@
 ---
 title: Notebook
 slug: notebook
-private: false
-publishStatus: published
-published: 2026-09-10
+date: 2026-09-10
 category: 知识管理
 tags: [Markdown, Hugo]
 featured: true

@@ -40,7 +40,7 @@ Nightnote 是面向 Obsidian 笔记的 Hugo 个人博客主题，采用简洁的
 git clone https://github.com/seeyou2n1ght/hugo-theme-nightnote.git themes/nightnote
 ```
 
-当前主题要求每个普通内容页都设置 `private: false` 和 `publishStatus: published`；缺少这两个字段的普通 Hugo 文章会使构建失败。主题不是发布闸门，仍须在站点侧筛选内容和附件。`hugo.toml` 至少需要以下配置。搜索与随机阅读依赖 `search.json`；数学公式使用下方的 Goldmark passthrough 配置。
+主题可直接渲染普通 Hugo 内容；发布资格由站点侧 Publisher 决定，不能把完整 Vault 直接交给 Hugo。`hugo.toml` 至少需要以下配置。搜索与随机阅读依赖 `search.json`；数学公式使用下方的 Goldmark passthrough 配置。
 
 ```toml
 baseURL = 'https://blog.example.com/'
@@ -52,15 +52,12 @@ theme = 'nightnote'
 [languages.zh]
   locale = 'zh-CN'
 
-[frontmatter]
-  date = ['published', 'date']
-
 [taxonomies]
   category = 'category'
   tag = 'tags'
   collection = 'collection'
 
-[permalinks]
+[permalinks.page]
   posts = '/posts/:slug/'
   projects = '/projects/:slug/'
 
@@ -89,27 +86,23 @@ theme = 'nightnote'
   inline = [['$', '$']]
 ```
 
-站点内容放在 `content/posts/`、`content/projects/`，并提供 `content/about/index.md` 和 `content/explore/_index.md`。可选的 `params.intro`、`params.focus`、`params.github`、`params.email` 分别用于首页简介、关注方向和联系链接。配置完成后，在站点根目录运行 `hugo server` 预览，运行 `hugo` 构建静态文件。
+站点内容放在 `content/posts/`、`content/projects/`；关于页使用 `content/about/index.md`，并在 Front Matter 中设置 `type: about`。探索页使用 `content/explore/_index.md`。可选的 `params.intro`、`params.focus`、`params.github`、`params.email` 分别用于首页简介、关注方向和联系链接。配置完成后，在站点根目录运行 `hugo server` 预览，运行 `hugo` 构建静态文件。
 
-### 从示例站开始迁移
+### 示例站与 Publisher
 
-将 `themes/nightnote/exampleSite/hugo.toml` 复制到站点根目录，将 `themes/nightnote/exampleSite/content/` 复制为站点的 `content/`。示例已包含关于页、普通文章、带图片的文章、普通项目、带封面的项目，以及文章与项目列表和探索页；直接运行 `hugo server` 即可预览。
+`exampleSite/` 是独立演示站点，包含关于页、文章和项目的完整 Page Bundle。只想试用主题时，可复制其 `hugo.toml` 与 `content/` 到新站点，修改 `baseURL`、标题、简介和联系信息，并在正式构建前替换或删除演示内容。
 
-先修改 `hugo.toml` 中的 `baseURL`、站点标题、简介和联系信息，再用自己的 Markdown 替换 `content/about/index.md`、`content/posts/` 和 `content/projects/` 中的演示文字与图片。保留各目录的 `_index.md`；不需要的演示文章和项目应在正式构建前删除。若使用 Obsidian 发布流程，还须按下文的元数据契约为笔记设置自己的 `noteId` 和 `noteType`，并在发布前筛选公开内容及附件。
+使用 Obsidian Publisher 时，只复制 `exampleSite/hugo.toml` 作为配置起点，**不要复制演示 `content/`**。Publisher 独占站点 `content/`，负责筛选公开笔记、转换双链与附件、生成 Page Bundle；首次成功发布时会创建文章、项目和探索栏目页。主题仓库本身不包含 Publisher。
 
 ## 元数据约束
 
-每篇文章和每个项目使用 `posts/<slug>/index.md` 或 `projects/<slug>/index.md` 作为 leaf bundle，图片放在同一目录；栏目页使用 `_index.md` 作为 branch bundle。下面是文章的 `index.md` 示例；项目放在 `projects` 并将 `noteType` 设为 `project`。
+每篇文章和每个项目使用 `posts/<slug>/index.md` 或 `projects/<slug>/index.md` 作为 leaf bundle，图片放在同一目录；栏目页使用 `_index.md` 作为 branch bundle。下面是文章的 `index.md` 示例；项目放在 `projects` 目录。
 
 ```yaml
 ---
 title: 示例文章
-noteId: c6f18e3e-a9a0-45a3-a1f9-5eed03f8e1c9
 slug: example-post
-noteType: note
-private: false
-publishStatus: published
-published: 2026-09-22
+date: 2026-09-22
 description: 一句话摘要
 category: Writing
 tags: [Hugo, Obsidian]
@@ -118,13 +111,13 @@ cover: cover.png # 可选
 ---
 ```
 
-主题仅展示 `private: false` 且 `publishStatus: published` 的普通页面，并从 `published` 读取日期。`category` 是单个专题，可同时关联文章与项目；`tags` 是数组，`collection` 是可选合集。项目还可使用 `featured: true` 和 `links`；文章可用 `project` 保存关联项目的站内 URL。`noteId` 用于 Obsidian 发布流程识别笔记更新，主题本身不使用它。
+主题展示 Hugo 已加载的页面。`title`、`date` 和正文足够渲染普通文章；`category`、`tags`、`collection`、`description` 和 `cover` 均可选。项目可使用 `featured: true` 和 `links: [{name, url}]`；文章可用 `project` 保存关联项目的站内 URL。
 
 **主题不是发布闸门。** 发布前须在站点侧校验元数据、筛选公开笔记与附件，并处理 Obsidian 双链；不要直接把完整笔记仓库交给 Hugo。Mermaid 和 KaTeX 按需从公共 CDN 加载，默认 Open Graph 配图为 SVG。
 
 ## 许可证
 
-主题源码采用 [MIT License](LICENSE)。本仓库内的示例内容与示例 SVG 同样采用 MIT License；个人站点内容不包含在主题中。
+主题源码、示例内容和预览资源均采用 [MIT License](LICENSE)；个人站点内容不包含在主题中。
 
 ## 独立预览与检查
 

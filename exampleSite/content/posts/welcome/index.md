@@ -1,9 +1,7 @@
 ---
 title: 从一篇笔记开始
 slug: welcome
-private: false
-publishStatus: published
-published: 2026-09-18
+date: 2026-09-18
 category: 知识管理
 tags: [Hugo, 写作]
 collection: 博客建设

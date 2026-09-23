@@ -1,0 +1,16 @@
+{{ define "main" }}
+<div class="article-layout shell project-layout">
+  <article class="prose">
+    <header class="article-header">
+      <h1>{{ .Title }}</h1>
+      <div class="meta article-meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time>{{ range .GetTerms "category" }}<a class="topic-link" href="{{ .RelPermalink }}"><span>专题</span>{{ .Title }}</a>{{ end }}</div>
+      {{ with .Params.description }}<p class="lead">{{ . }}</p>{{ end }}
+      {{ with .Params.links }}<div class="project-links">{{ range . }}{{ $name := .name }}{{ with .url }}<a href="{{ . }}" rel="noopener noreferrer">{{ $name }} ↗</a>{{ end }}{{ end }}</div>{{ end }}
+      {{ with .Params.cover }}{{ with $.Resources.GetMatch . }}<img class="article-cover" src="{{ .RelPermalink }}" alt="">{{ end }}{{ end }}
+    </header>
+    <div class="article-body">{{ .Content }}</div>
+    <footer class="article-end">{{ with .GetTerms "tags" }}<div class="article-tags"><span class="taxonomy-label">标签</span><div class="tag-list">{{ range . }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}</div></div>{{ end }}{{ range .GetTerms "collection" }}<div class="article-collection"><span class="taxonomy-label">合集</span><a href="{{ .RelPermalink }}">{{ .Title }} ↗</a></div>{{ end }}</footer>
+    <section><h2>相关文章</h2><ul class="article-list">{{ $target := .RelPermalink }}{{ range (where site.RegularPages "Section" "posts").ByDate.Reverse }}{{ $post := . }}{{ with .Params.project }}{{ with site.GetPage . }}{{ if eq .RelPermalink $target }}{{ partial "article-row.html" $post }}{{ end }}{{ end }}{{ end }}{{ end }}</ul></section>
+  </article>
+</div>
+{{ end }}

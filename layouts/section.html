@@ -1,5 +1,5 @@
 {{ define "main" }}
-{{ $public := partial "public-pages.html" . }}
+{{ $public := site.RegularPages }}
 <div class="shell page">
   <header class="page-intro">
     <h1>{{ .Title }}</h1>

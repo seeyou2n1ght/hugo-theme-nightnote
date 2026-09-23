@@ -1,4 +1,4 @@
-{{ if and .IsPage (or (ne .Params.publishstatus "published") (ne .Params.private false)) }}{{ errorf "Refusing to render unpublished page: %s" .File.Path }}{{ end }}<!doctype html><html lang="{{ site.Language.Locale }}"><head>{{ partial "head.html" . }}</head><body>
+<!doctype html><html lang="{{ site.Language.Locale }}"><head>{{ partial "head.html" . }}</head><body>
 <a class="skip-link" href="#main">跳到正文</a>
 {{ partial "header.html" . }}<main id="main" tabindex="-1">{{ block "main" . }}{{ end }}</main>{{ partial "footer.html" . }}
 </body></html>

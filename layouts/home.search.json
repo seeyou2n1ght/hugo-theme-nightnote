@@ -1,5 +1,5 @@
-{{- $pages := partial "public-pages.html" . -}}{{- $items := slice -}}
+{{- $pages := site.RegularPages -}}{{- $items := slice -}}
 {{- range $pages -}}{{- $type := "article" -}}{{- if eq .Section "projects" -}}{{- $type = "project" -}}{{- else if eq .RelPermalink ("about/" | relURL) -}}{{- $type = "page" -}}{{- end -}}{{- $items = $items | append (dict "title" .Title "url" .RelPermalink "type" $type "description" (partial "summary.html" .)) -}}{{- end -}}
-{{- range slice "category" "tags" "collection" -}}{{- $taxonomy := . -}}{{- $type := . -}}{{- if eq $type "category" -}}{{- $type = "topic" -}}{{- end -}}{{- range partial "post-terms.html" (dict "page" site.Home "taxonomy" $taxonomy) -}}{{- $items = $items | append (dict "title" .Page.Title "url" .Page.RelPermalink "type" $type "description" "") -}}{{- end -}}{{- end -}}
+{{- range slice "category" "tags" "collection" -}}{{- $taxonomy := . -}}{{- $type := . -}}{{- if eq $type "category" -}}{{- $type = "topic" -}}{{- end -}}{{- range partial "post-terms.html" (dict "taxonomy" $taxonomy) -}}{{- $items = $items | append (dict "title" .Page.Title "url" .Page.RelPermalink "type" $type "description" "") -}}{{- end -}}{{- end -}}
 {{- $items = $items | append (dict "title" "探索" "url" ("explore/" | relURL) "type" "page" "description" "专题、标签和文章时间线") -}}
 {{- $items | jsonify -}}

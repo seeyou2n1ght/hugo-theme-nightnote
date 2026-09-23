@@ -1,9 +1,8 @@
 ---
 title: 关于
+type: about
 description: 这里介绍作者、正在做的事情，以及这个站点的由来。
-private: false
-publishStatus: published
-published: 2026-01-01
+date: 2026-01-01
 ---
 我喜欢用简单的工具解决具体的问题，也把过程中的判断与经验写下来。
 

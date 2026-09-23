@@ -1,9 +1,7 @@
 ---
 title: 让工具适应自己的工作方式
 slug: practice
-private: false
-publishStatus: published
-published: 2026-09-12
+date: 2026-09-12
 category: 软件实践
 tags: [Hugo, Automation]
 collection: 博客建设

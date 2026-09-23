@@ -1,16 +1,35 @@
 {{ define "main" }}
-{{ $public := partial "public-pages.html" . }}{{ $isProject := eq .Section "projects" }}{{ $isAbout := eq .RelPermalink ("about/" | relURL) }}
-<div class="article-layout shell{{ if $isAbout }} about-layout{{ else if $isProject }} project-layout{{ end }}"><article class="prose"><header class="article-header"><h1>{{ .Title }}</h1>{{ if not $isAbout }}<div class="meta article-meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time>{{ if not $isProject }}<span>阅读约 {{ .ReadingTime }} 分钟</span>{{ end }}{{ range .GetTerms "category" }}<a class="topic-link" href="{{ .RelPermalink }}"><span>专题</span>{{ .Title }}</a>{{ end }}</div>{{ end }}{{ with .Params.description }}<p class="lead">{{ . }}</p>{{ end }}
-{{ if $isProject }}{{ with .Params.links }}<div class="project-links">{{ range $name, $url := . }}{{ with $url }}<a href="{{ . }}" rel="noopener noreferrer">{{ $name }} ↗</a>{{ end }}{{ end }}</div>{{ end }}{{ end }}
-{{ with .Params.cover }}{{ with $.Resources.GetMatch . }}<img class="article-cover" src="{{ .RelPermalink }}" alt="">{{ end }}{{ end }}</header>
-{{ if and (not $isProject) (not $isAbout) .TableOfContents }}<details class="mobile-toc"><summary>本文目录</summary>{{ .TableOfContents }}</details>{{ end }}
-<div class="article-body">{{ .Content }}</div>
-{{ if not $isAbout }}<footer class="article-end">{{ with .GetTerms "tags" }}<div class="article-tags"><span class="taxonomy-label">标签</span><div class="tag-list">{{ range . }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}</div></div>{{ end }}{{ range .GetTerms "collection" }}<div class="article-collection"><span class="taxonomy-label">合集</span><a href="{{ .RelPermalink }}">{{ .Title }} ↗</a></div>{{ end }}</footer>{{ end }}
-{{ if $isProject }}<section><h2>相关文章</h2><ul class="article-list">{{ $target := .RelPermalink }}{{ range (where $public "Section" "posts").ByDate.Reverse }}{{ if and .Params.project (eq (strings.TrimPrefix "/" .Params.project | relURL) $target) }}{{ partial "article-row.html" . }}{{ end }}{{ end }}</ul></section>{{ else if eq .Section "posts" }}
-<section><h2>延伸阅读</h2><ul class="article-list">{{ $count := 0 }}{{ range (where $public "Section" "posts").ByDate.Reverse }}{{ if and (ne .RelPermalink $.RelPermalink) (lt $count 5) (eq .Params.category $.Params.category) }}{{ partial "article-row.html" . }}{{ $count = add $count 1 }}{{ end }}{{ end }}{{ range (where $public "Section" "posts").ByDate.Reverse }}{{ if and (ne .RelPermalink $.RelPermalink) (lt $count 5) (ne .Params.category $.Params.category) (gt (len (intersect .Params.tags $.Params.tags)) 0) }}{{ partial "article-row.html" . }}{{ $count = add $count 1 }}{{ end }}{{ end }}{{ range (where $public "Section" "posts").ByDate.Reverse }}{{ if and (ne .RelPermalink $.RelPermalink) (lt $count 3) (ne .Params.category $.Params.category) (eq (len (intersect .Params.tags $.Params.tags)) 0) }}{{ partial "article-row.html" . }}{{ $count = add $count 1 }}{{ end }}{{ end }}</ul></section>
-<nav class="article-neighbors" aria-label="相邻文章">{{ with .PrevInSection }}<a href="{{ .RelPermalink }}">← 较早：{{ .Title }}</a>{{ end }}{{ with .NextInSection }}<a href="{{ .RelPermalink }}">较新：{{ .Title }} →</a>{{ end }}</nav>
-{{ end }}</article>{{ if and (eq .Section "posts") .TableOfContents }}<aside class="desktop-toc"><p>本文目录</p>{{ .TableOfContents }}</aside>{{ end }}</div>
+{{ $isAbout := eq .Type "about" }}
+{{ $posts := where site.RegularPages "Section" "posts" }}
+{{ $toc := .TableOfContents }}{{ $hasTOC := in $toc "<li" }}
+<div class="article-layout shell{{ if $isAbout }} about-layout{{ end }}">
+  <article class="prose">
+    <header class="article-header">
+      <h1>{{ .Title }}</h1>
+      {{ if not $isAbout }}
+      <div class="meta article-meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time><span>阅读约 {{ .ReadingTime }} 分钟</span>{{ range .GetTerms "category" }}<a class="topic-link" href="{{ .RelPermalink }}"><span>专题</span>{{ .Title }}</a>{{ end }}</div>
+      {{ end }}
+      {{ with .Params.description }}<p class="lead">{{ . }}</p>{{ end }}
+      {{ with .Params.cover }}{{ with $.Resources.GetMatch . }}<img class="article-cover" src="{{ .RelPermalink }}" alt="">{{ end }}{{ end }}
+    </header>
+    {{ if and (not $isAbout) $hasTOC }}<details class="mobile-toc"><summary>本文目录</summary>{{ $toc }}</details>{{ end }}
+    <div class="article-body">{{ .Content }}</div>
+    {{ if not $isAbout }}
+    <footer class="article-end">{{ with .GetTerms "tags" }}<div class="article-tags"><span class="taxonomy-label">标签</span><div class="tag-list">{{ range . }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}</div></div>{{ end }}{{ range .GetTerms "collection" }}<div class="article-collection"><span class="taxonomy-label">合集</span><a href="{{ .RelPermalink }}">{{ .Title }} ↗</a></div>{{ end }}</footer>
+    {{ end }}
+    {{ if eq .Section "posts" }}
+    <section><h2>延伸阅读</h2><ul class="article-list">
+      {{ $count := 0 }}{{ $tags := .Params.tags | default (slice) }}
+      {{ range $posts.ByDate.Reverse }}{{ if and (ne .RelPermalink $.RelPermalink) (lt $count 5) (eq .Params.category $.Params.category) }}{{ partial "article-row.html" . }}{{ $count = add $count 1 }}{{ end }}{{ end }}
+      {{ range $posts.ByDate.Reverse }}{{ if and (ne .RelPermalink $.RelPermalink) (lt $count 5) (ne .Params.category $.Params.category) (gt (len (intersect (.Params.tags | default (slice)) $tags)) 0) }}{{ partial "article-row.html" . }}{{ $count = add $count 1 }}{{ end }}{{ end }}
+      {{ range $posts.ByDate.Reverse }}{{ if and (ne .RelPermalink $.RelPermalink) (lt $count 3) (ne .Params.category $.Params.category) (eq (len (intersect (.Params.tags | default (slice)) $tags)) 0) }}{{ partial "article-row.html" . }}{{ $count = add $count 1 }}{{ end }}{{ end }}
+    </ul></section>
+    <nav class="article-neighbors" aria-label="相邻文章">{{ with .PrevInSection }}<a href="{{ .RelPermalink }}">← 较早：{{ .Title }}</a>{{ end }}{{ with .NextInSection }}<a href="{{ .RelPermalink }}">较新：{{ .Title }} →</a>{{ end }}</nav>
+    {{ end }}
+  </article>
+  {{ if and (eq .Section "posts") $hasTOC }}<aside class="desktop-toc"><p>本文目录</p>{{ $toc }}</aside>{{ end }}
+</div>
 {{ if eq .Section "posts" }}<div class="reading-progress" aria-hidden="true"></div>{{ end }}
-{{ if in .RawContent "```mermaid" }}<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true});</script>{{ end }}
-{{ if in .RawContent "$" }}<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" onload="document.querySelectorAll('.math').forEach(el=>katex.render(el.textContent,el,{throwOnError:false,displayMode:el.dataset.display==='true'}))"></script>{{ end }}
+{{ if in .Content "class=\"mermaid\"" }}<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true});</script>{{ end }}
+{{ if in .Content "class=\"math\"" }}<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" onload="document.querySelectorAll('.math').forEach(el=>katex.render(el.textContent,el,{throwOnError:false,displayMode:el.dataset.display==='true'}))"></script>{{ end }}
 {{ end }}

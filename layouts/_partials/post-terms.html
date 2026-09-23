@@ -1,4 +1,4 @@
-{{- $public := partial "public-pages.html" .page -}}
+{{- $public := site.RegularPages -}}
 {{- $pages := where $public "Section" "posts" -}}
 {{- if eq .taxonomy "category" -}}{{- $pages = where $public "Section" "in" (slice "posts" "projects") -}}{{- end -}}
 {{- $terms := slice -}}

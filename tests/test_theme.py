@@ -47,16 +47,25 @@ class ThemeTest(unittest.TestCase):
             for section, slug, title, date in [
                 ("posts", "older", "Older", "2026-01-01"),
                 ("posts", "newer", "Newer", "2026-02-01"),
-                ("projects", "tool", "Tool", "2026-01-01"),
+                ("posts", "plain", "Plain", "2026-03-01"),
+                ("projects", "写作工具", "Tool", "2026-01-01"),
             ]:
                 path = content / section / slug / "index.md"
                 path.parent.mkdir(parents=True, exist_ok=True)
+                body = "## 正文\n示例内容。\n"
+                if slug == "plain":
+                    body = "正文没有小标题。\n"
+                if slug == "older":
+                    body += "\n`$100` 是代码，不是公式。\n"
+                if slug == "newer":
+                    body += "\n~~~mermaid\ngraph TD; A-->B\n~~~\n"
                 path.write_text(
-                    f"---\ntitle: {title}\nslug: {slug}\npublished: {date}\n"
-                    "private: false\npublishStatus: published\ncategory: 知识管理\n"
-                    + ("tags: [TypeScript]\n" if section == "projects" else
+                    f"---\ntitle: {title}\nslug: {slug}\ndate: {date}\n"
+                    "category: 知识管理\n"
+                    + ("tags: [TypeScript]\nlinks: [{name: Source, url: https://example.org/source}]\n" if section == "projects" else
                        "tags: [中文标签]\ncollection: 博客建设\n")
-                    + "---\n## 正文\n示例内容。\n", encoding="utf-8",
+                    + ("project: /projects/写作工具/\n" if slug == "newer" else "")
+                    + "---\n" + body, encoding="utf-8",
                 )
             output = temporary / "public"
             subprocess.run(
@@ -67,14 +76,22 @@ class ThemeTest(unittest.TestCase):
             )
             newer = (output / "posts/newer/index.html").read_text(encoding="utf-8")
             older = (output / "posts/older/index.html").read_text(encoding="utf-8")
+            plain = (output / "posts/plain/index.html").read_text(encoding="utf-8")
             self.assertIn("← 较早：Older", newer)
             self.assertIn("较新：Newer →", older)
             self.assertIn("博客建设 ↗</a>", newer)
             self.assertIn("中文标签</a>", newer)
             self.assertIn("知识管理</a>", newer)
+            self.assertIn('mermaid@11', newer)
+            self.assertNotIn('katex@', older)
+            self.assertNotIn('mobile-toc', plain)
+            self.assertNotIn('desktop-toc', plain)
             tag = (output / "tags/typescript/index.html").read_text(encoding="utf-8")
             self.assertIn("1 个项目", tag)
-            self.assertIn('/projects/tool/', tag)
+            self.assertIn('/projects/%E5%86%99%E4%BD%9C%E5%B7%A5%E5%85%B7/', tag)
+            project = (output / "projects/写作工具/index.html").read_text(encoding="utf-8")
+            self.assertIn('/posts/newer/', project)
+            self.assertIn('href="https://example.org/source"', project)
             topic = next((output / "topics").glob("*/index.html")).read_text(encoding="utf-8")
             self.assertIn("中文标签</a>", topic)
 
