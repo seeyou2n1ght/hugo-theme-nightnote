@@ -1,1 +1,1 @@
-<a class="project-card" href="{{ .RelPermalink }}">{{ partial "cover.html" . }}<div><h3>{{ .Title }}</h3><p>{{ partial "summary.html" . }}</p><span class="muted">{{ delimit (first 3 .Params.tags) " · " }}</span></div></a>
+<a class="project-card" href="{{ .RelPermalink }}">{{ partial "cover.html" . }}<div><h3>{{ .Title }}</h3><p>{{ partial "summary.html" . }}</p><span class="muted">{{ with .Params.tags }}{{ delimit (first 3 .) " · " }}{{ end }}</span></div></a>

@@ -2,7 +2,7 @@
   <a class="brand" href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
   <button class="mobile-menu" type="button" aria-expanded="false" aria-controls="main-links">菜单</button>
   <div id="main-links" class="nav-links">
-    <a href="{{ "explore/" | relURL }}">探索</a><a href="{{ "projects/" | relURL }}">项目</a><a href="{{ "about/" | relURL }}">关于</a>
+    <a href="{{ "explore/" | relURL }}"{{ if or (eq .Section "explore") (eq .Kind "term") (eq .Kind "taxonomy") }} aria-current="page"{{ end }}>探索</a><a href="{{ "projects/" | relURL }}"{{ if eq .Section "projects" }} aria-current="page"{{ end }}>项目</a><a href="{{ "about/" | relURL }}"{{ if eq .RelPermalink ("about/" | relURL) }} aria-current="page"{{ end }}>关于</a>
     <div class="nav-actions">
     <button class="icon-button" type="button" data-random-article aria-label="随机阅读一篇文章" title="随机阅读一篇文章"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="8" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1" fill="currentColor" stroke="none"/></svg></button>
     <button class="icon-button" type="button" data-search-open aria-label="搜索" title="搜索（Ctrl/⌘ K）"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 5 5"/></svg></button>

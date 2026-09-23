@@ -1,3 +1,25 @@
-{{ define "main" }}{{ $public := partial "public-pages.html" . }}
-<div class="shell page"><h1>{{ .Title }}</h1>{{ if eq .Section "projects" }}<p class="lead">一些我做过、正在做或持续尝试的项目。</p><div class="project-grid">{{ range (where $public "Section" "projects").ByDate.Reverse }}{{ partial "project-card.html" . }}{{ end }}</div>{{ else }}<ul class="article-list">{{ range (where $public "Section" .Section).ByDate.Reverse }}{{ partial "article-row.html" . }}{{ end }}</ul>{{ end }}</div>
+{{ define "main" }}
+{{ $public := partial "public-pages.html" . }}
+<div class="shell page">
+  <header class="page-intro">
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}<p class="lead">{{ . }}</p>{{ else }}
+      {{ if eq .Section "projects" }}<p class="lead">一些我做过、正在做或持续尝试的项目。</p>{{ end }}
+    {{ end }}
+    {{ with .Content }}<div class="page-content">{{ . }}</div>{{ end }}
+  </header>
+  {{ if eq .Section "projects" }}
+    <div class="project-grid">
+      {{ range (where $public "Section" "projects").ByDate.Reverse }}
+        {{ partial "project-card.html" . }}
+      {{ else }}<p class="muted">暂无项目。</p>{{ end }}
+    </div>
+  {{ else }}
+    <ul class="article-list">
+      {{ range (where $public "Section" .Section).ByDate.Reverse }}
+        {{ partial "article-row.html" . }}
+      {{ else }}<li class="muted">暂无文章。</li>{{ end }}
+    </ul>
+  {{ end }}
+</div>
 {{ end }}

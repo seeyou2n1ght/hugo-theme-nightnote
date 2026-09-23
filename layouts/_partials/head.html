@@ -9,6 +9,6 @@
 <meta property="og:url" content="{{ .Permalink }}">
 {{ $og := partial "og-image.html" . }}{{ with .Params.cover }}{{ with $.Resources.GetMatch . }}{{ $og = .Permalink }}{{ end }}{{ end }}<meta property="og:image" content="{{ $og }}">
 {{ with site.Home.OutputFormats.Get "RSS" }}<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}">{{ end }}
-{{ with resources.Get "css/site.css" }}<link rel="stylesheet" href="{{ .RelPermalink }}">{{ end }}
+{{ with resources.Get "css/site.css" | minify | fingerprint }}<link rel="stylesheet" href="{{ .RelPermalink }}">{{ end }}
 <script>try{document.documentElement.dataset.theme=localStorage.getItem('nightnote-theme')||'system'}catch(e){}</script>
-{{ with resources.Get "js/site.js" }}<script defer src="{{ .RelPermalink }}"></script>{{ end }}
+{{ with resources.Get "js/site.js" | minify | fingerprint }}<script defer src="{{ .RelPermalink }}"></script>{{ end }}

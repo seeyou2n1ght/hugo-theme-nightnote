@@ -1,7 +1,7 @@
 {{ define "main" }}
 {{ $public := partial "public-pages.html" . }}{{ $posts := (where $public "Section" "posts").ByDate.Reverse }}
 <div class="shell page explore-page">
-  <header class="explore-intro"><h1>探索</h1><p class="lead">从专题、标签和合集出发，或沿着时间线阅读。</p></header>
+  <header class="page-intro"><h1>{{ .Title }}</h1><p class="lead">{{ .Description | default "从专题、标签和合集出发，或沿着时间线阅读。" }}</p></header>
   <div class="discovery-grid">
     <section><h2>专题</h2><div class="topic-grid">{{ range partial "post-terms.html" (dict "page" . "taxonomy" "category") }}<a href="{{ .Page.RelPermalink }}">{{ .Page.Title }} <small>{{ .Count }}</small></a>{{ end }}</div></section>
     <section><h2>标签</h2>{{ partial "tag-cloud.html" (dict "terms" (partial "post-terms.html" (dict "page" . "taxonomy" "tags"))) }}</section>
