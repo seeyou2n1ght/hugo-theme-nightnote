@@ -6,23 +6,31 @@ Nightnote 是面向 Obsidian 笔记的 Hugo 个人博客主题，采用简洁的
 
 ## 视觉预览
 
-以下截图来自仓库自带的独立 `exampleSite/` 演示内容。
+以下整页截图来自仓库自带的独立 `exampleSite/`。合成图沿对角线展示深色（左）和浅色（右）；每页也提供未经合成的原图，便于查看完整细节。
 
-### 首页 · 浅色
+### 首页
 
-![Nightnote 首页浅色模式，包含简介、标签和近期文章](docs/screenshots/home-light.png)
+![Nightnote 首页整页，左侧深色、右侧浅色，展示简介、文章和精选项目](docs/screenshots/home-split.png)
 
-### 探索 · 深色
+[深色原图](docs/screenshots/home-dark.png) · [浅色原图](docs/screenshots/home-light.png)
 
-![Nightnote 探索页深色模式，包含专题、标签、合集和时间线](docs/screenshots/explore-dark.png)
+### 探索
 
-### 项目 · 浅色
+![Nightnote 探索页整页，左侧深色、右侧浅色，展示专题、标签、合集和时间线](docs/screenshots/explore-split.png)
 
-![Nightnote 项目页浅色模式，展示有封面和无封面的项目卡片](docs/screenshots/projects-light.png)
+[深色原图](docs/screenshots/explore-dark.png) · [浅色原图](docs/screenshots/explore-light.png)
 
-### 窄屏 · 深色
+### 项目
 
-<img src="docs/screenshots/projects-mobile-dark.png" alt="Nightnote 项目页在窄屏深色模式下的卡片布局" width="390">
+![Nightnote 项目页整页，左侧深色、右侧浅色，展示有封面和无封面的项目卡片](docs/screenshots/projects-split.png)
+
+[深色原图](docs/screenshots/projects-dark.png) · [浅色原图](docs/screenshots/projects-light.png) · [390px 窄屏深色原图](docs/screenshots/projects-mobile-dark.png)
+
+### 关于我
+
+![Nightnote 关于页整页，左侧深色、右侧浅色，展示 Markdown 正文和联系入口](docs/screenshots/about-split.png)
+
+[深色原图](docs/screenshots/about-dark.png) · [浅色原图](docs/screenshots/about-light.png)
 
 ## 安装与使用
 
