@@ -89,17 +89,17 @@ theme = 'nightnote'
   inline = [['$', '$']]
 ```
 
-站点内容放在 `content/posts/`、`content/projects/`，并提供 `content/about.md` 和 `content/explore/_index.md`。可选的 `params.intro`、`params.focus`、`params.github`、`params.email` 分别用于首页简介、关注方向和联系链接。配置完成后，在站点根目录运行 `hugo server` 预览，运行 `hugo` 构建静态文件。
+站点内容放在 `content/posts/`、`content/projects/`，并提供 `content/about/index.md` 和 `content/explore/_index.md`。可选的 `params.intro`、`params.focus`、`params.github`、`params.email` 分别用于首页简介、关注方向和联系链接。配置完成后，在站点根目录运行 `hugo server` 预览，运行 `hugo` 构建静态文件。
 
 ### 从示例站开始迁移
 
 将 `themes/nightnote/exampleSite/hugo.toml` 复制到站点根目录，将 `themes/nightnote/exampleSite/content/` 复制为站点的 `content/`。示例已包含关于页、普通文章、带图片的文章、普通项目、带封面的项目，以及文章与项目列表和探索页；直接运行 `hugo server` 即可预览。
 
-先修改 `hugo.toml` 中的 `baseURL`、站点标题、简介和联系信息，再用自己的 Markdown 替换 `content/about.md`、`content/posts/` 和 `content/projects/` 中的演示文字与图片。保留各目录的 `_index.md`；不需要的演示文章和项目应在正式构建前删除。若使用 Obsidian 发布流程，还须按下文的元数据契约为笔记设置自己的 `noteId` 和 `noteType`，并在发布前筛选公开内容及附件。
+先修改 `hugo.toml` 中的 `baseURL`、站点标题、简介和联系信息，再用自己的 Markdown 替换 `content/about/index.md`、`content/posts/` 和 `content/projects/` 中的演示文字与图片。保留各目录的 `_index.md`；不需要的演示文章和项目应在正式构建前删除。若使用 Obsidian 发布流程，还须按下文的元数据契约为笔记设置自己的 `noteId` 和 `noteType`，并在发布前筛选公开内容及附件。
 
 ## 元数据约束
 
-下面是文章示例；项目放在 `projects` 并将 `noteType` 设为 `project`。图片建议与 `index.md` 放在同一个 Page Bundle 中。
+每篇文章和每个项目使用 `posts/<slug>/index.md` 或 `projects/<slug>/index.md` 作为 leaf bundle，图片放在同一目录；栏目页使用 `_index.md` 作为 branch bundle。下面是文章的 `index.md` 示例；项目放在 `projects` 并将 `noteType` 设为 `project`。
 
 ```yaml
 ---
@@ -148,7 +148,7 @@ hugo --source exampleSite --themesDir ../.. --minify
 ## 页面与视觉约定
 
 - 保留左对齐简介、纯文本标签云、文章列表和项目卡片；首页仅在存在精选项目时展示对应模块。
-- `content/projects/_index.md` 的 `title`、`description` 和正文可定制项目页介绍；探索页使用 `_index.md` 的标题与摘要。关于页由 `content/about.md` 正文驱动，不需要额外模板或个人信息硬编码。
+- `content/projects/_index.md` 的 `title`、`description` 和正文可定制项目页介绍；探索页使用 `_index.md` 的标题与摘要。关于页由 `content/about/index.md` 正文驱动，不需要额外模板或个人信息硬编码。
 - 文章与关于页使用适合长文的行宽；所有页面共享字体、颜色、间距和组件样式。明暗模式及减少动画偏好均由原生 CSS 处理。
 - `assets/css/site.css` 保持可读源码，颜色、字体与模块间距集中在 `:root`。站点可覆盖同路径资源进行定制。Hugo 在构建时压缩并为 CSS/JS 添加内容指纹，避免部署后命中旧资源缓存。
 - 搜索匹配标题和摘要；标签/合集发现入口统计文章，专题统计文章与项目。直接访问项目标签页时会显示相关项目。

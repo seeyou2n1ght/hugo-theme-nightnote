@@ -19,7 +19,8 @@ class ThemeTest(unittest.TestCase):
                 check=True, capture_output=True,
             )
             for page in ("index.html", "explore/index.html", "projects/index.html",
-                         "about/index.html", "posts/welcome/index.html"):
+                         "about/index.html", "posts/welcome/index.html",
+                         "posts/practice/index.html", "projects/toolbox/index.html"):
                 html = (output / page).read_text(encoding="utf-8")
                 if page == "index.html":
                     self.assertIn("<title>Nightnote</title>", html)
@@ -30,8 +31,13 @@ class ThemeTest(unittest.TestCase):
                     self.assertTrue((output / asset.removeprefix('/preview/')).is_file())
             project = (output / "projects/notebook/index.html").read_text(encoding="utf-8")
             self.assertIn('/preview/posts/welcome/', project)
+            self.assertIn('/preview/projects/notebook/cover.svg', project)
+            about = (output / "about/index.html").read_text(encoding="utf-8")
+            self.assertIn('about-layout', about)
+            self.assertNotIn('article-meta', about)
             search = json.loads((output / "search.json").read_text(encoding="utf-8"))
             self.assertTrue(all(item['url'].startswith('/preview/') for item in search))
+            self.assertEqual(next(item['type'] for item in search if item['url'] == '/preview/about/'), 'page')
 
     def test_navigation_and_chinese_taxonomies(self):
         root = Path(__file__).resolve().parents[1]
@@ -43,7 +49,7 @@ class ThemeTest(unittest.TestCase):
                 ("posts", "newer", "Newer", "2026-02-01"),
                 ("projects", "tool", "Tool", "2026-01-01"),
             ]:
-                path = content / section / (slug + ".md")
+                path = content / section / slug / "index.md"
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(
                     f"---\ntitle: {title}\nslug: {slug}\npublished: {date}\n"
